@@ -45,7 +45,7 @@ object Yahtzee extends App {
       newRoll <- reRolls(roll, choices)
       _       <- putStrLn(s"Your new roll is ${newRoll.mkString(" ")}")
       last <- if (leftAttempts > 0)
-               choice("Would you like to reroll again?", reRollsCycle(newRoll, leftAttempts - 1), IO.now(newRoll))
+               choice("Would you like to reroll again?", reRollsCycle(newRoll, leftAttempts - 1), IO.unit(newRoll))
              else IO.now(newRoll)
     } yield last
 
@@ -66,7 +66,7 @@ object Yahtzee extends App {
       _      <- putStrLn("Press any key to roll") *> getStrLn
       roll   <- rollDice
       _      <- putStrLn(s"Your roll is ${roll.mkString(" ")}.\n")
-      reroll <- choice("Would you like to reroll?", yes = reRollsCycle(roll, 2), no = IO.now(roll))
+      reroll <- choice("Would you like to reroll?", yes = reRollsCycle(roll, 2), no = IO.unit(roll))
       cat    <- category(reroll)
       _      <- putStrLn(s"Your points for this roll are: ${points(cat)}")
       cats   = cat :: categories
